@@ -134,19 +134,39 @@ class Bullet(pygame.sprite.Sprite):
         self.rect.y += self.speed_y
 
 class wall(pygame.sprite.Sprite):
-    def __init__(self, x , y):
+    def __init__(self, x , y, color):
         # call the parent class (Sprite) constructor
         pygame.sprite.Sprite.__init__(self)
 
         # [load] image or generate image
         self.image = pygame.Surface([config.tile_size, config.tile_size])
-        self.image.fill(config.colors["white"])
+        self.image.fill(config.colors[color])
 
         # initialize rect/hitbox
         self.rect = self.image.get_rect()
         self.rect.y = y
         self.rect.x = x
 
+class hp_bar(pygame.sprite.Sprite):
+    def __init__(self, x , y):
+        # call the parent class (Sprite) constructor
+        pygame.sprite.Sprite.__init__(self)
+
+        # [load] image or generate image
+        self.total_size = 150
+        self.percentage = 1
+        self.image = pygame.Surface([self.total_size, 50])
+        self.image.fill(config.colors["red"])
+
+
+        # initialize rect/hitbox
+        self.rect = self.image.get_rect()
+        self.rect.y = y
+        self.rect.x = x
+
+    def mod_hp(self, currHp, maxHp):
+        self.percentage = maxHp/currHp
+        self.image = pygame.Surface([self.total_size * self.percentage, 50])
 
 class enemy_1(pygame.sprite.Sprite):
 

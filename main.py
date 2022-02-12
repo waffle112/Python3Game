@@ -46,14 +46,14 @@ def mainMenu():
 
 
 
-def generate_level(map):
+def generate_level(map, pics):
     for y in range(0, len(map)):
         for x in range(0, len(map[y])):
             if map[y][x] == "x":
-                temp = wall(x * config.tile_size, y * config.tile_size)
+                temp = wall(x * config.tile_size, y * config.tile_size, "white")
                 config.all_sprites.add(temp)
             #elif symbol if keyword for a picture
-                #load in a picture
+                #load in a picture from list pics
             else:
                 pass
 
@@ -83,7 +83,8 @@ def game():
 
     set_text("test")
 
-    generate_level(config.world_map)
+    pics = []
+    generate_level(config.world_map, pics)
 
     while True:
         clock.tick(60)  # set fps to 60
