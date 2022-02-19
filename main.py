@@ -52,6 +52,7 @@ def generate_level(map, pics):
             if map[y][x] == "x":
                 temp = wall(x * config.tile_size, y * config.tile_size, "white")
                 config.all_sprites.add(temp)
+                config.map_sprites.add(temp)
             #elif symbol if keyword for a picture
                 #load in a picture from list pics
             else:
@@ -81,7 +82,7 @@ def game():
     config.all_sprites.add(item1)
     config.item_sprites.add(item1)
 
-    set_text("test")
+    set_text(["test1", "Test2", "Test3"])
 
     pics = []
     generate_level(config.world_map, pics)
@@ -95,9 +96,6 @@ def game():
         # update
         config.all_sprites.update()
         config.item_sprites.update(main_player)
-
-
-        # check collision
 
 
 

@@ -34,6 +34,7 @@ class Player(pygame.sprite.Sprite):
     def update(self):
         self.handle_movement()
         self.handle_mouse()
+        self.handle_collision()
         pass
 
     # handle_movement
@@ -87,7 +88,10 @@ class Player(pygame.sprite.Sprite):
 
     # handle_collision
     def handle_collision(self):
-        pass
+        wall_collision = pygame.sprite.spritecollide(self, config.map_sprites, False)
+        if wall_collision and isinstance(wall_collision[0], wall):
+            self.rect.x -= self.x_curr_spd
+            self.rect.y -= self.y_curr_spd
 
     # handle_sprite
     def handle_sprite(self):
@@ -132,6 +136,23 @@ class Bullet(pygame.sprite.Sprite):
     def update(self):
         self.rect.x += self.speed_x
         self.rect.y += self.speed_y
+        self.handle_collision()
+
+    # handle_collision
+    def handle_collision(self):
+        wall_collision = pygame.sprite.spritecollide(self, config.map_sprites, False)
+        if wall_collision and isinstance(wall_collision[0], wall):
+            self.kill()
+        # boundaries check
+        elif self.rect.right >= config.width:
+            self.kill()
+        elif self.rect.left <= 0:
+            self.kill()
+        elif self.rect.top <= 0:
+            self.kill()
+        elif self.rect.bottom >= config.height:
+            self.kill()
+
 
 class wall(pygame.sprite.Sprite):
     def __init__(self, x , y, color):

@@ -20,6 +20,7 @@ colors = {"black": [0, 0, 0], "green": [0, 255, 0], "red": [255, 0, 0], "blue":[
 all_sprites = pygame.sprite.Group()
 bullet_sprites = pygame.sprite.Group()
 item_sprites = pygame.sprite.Group()
+map_sprites = pygame.sprite.Group()
 
 
 
