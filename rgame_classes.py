@@ -16,15 +16,15 @@ class Player(pygame.sprite.Sprite):
         pygame.sprite.Sprite.__init__(self)
 
         # [load] image or generate image
-        self.image = pygame.Surface([30, 30])
+        self.image = pygame.Surface([config.tile_size, config.tile_size])
         self.image.fill(config.colors["green"])
 
         # initialize rect/hitbox
         self.rect = self.image.get_rect()
 
         # handle movement variables
-        self.x_spd, self.x_curr_spd = 5, 0
-        self.y_spd, self.y_curr_spd = 5, 0
+        self.x_spd, self.x_curr_spd = config.tile_size, 0
+        self.y_spd, self.y_curr_spd = config.tile_size, 0
 
         # handle misc variables such as a bullet list/ammo count
         self.screen_width, self.screen_height = size
@@ -33,13 +33,13 @@ class Player(pygame.sprite.Sprite):
 
     # update - mandatory
     def update(self):
-        self.handle_movement()
+        #self.handle_movement()
         self.handle_mouse()
         self.handle_collision()
         pass
 
     # handle_movement
-    def handle_movement(self):
+    def handle_movement(self, keystate):
         # reset speed
         self.x_curr_spd = 0
         self.y_curr_spd = 0
@@ -49,7 +49,7 @@ class Player(pygame.sprite.Sprite):
         # print(keystate)
         if keystate[pygame.K_UP] or keystate[pygame.K_w]:
             self.y_curr_spd -= self.y_spd
-            # self.image.fill(colors["green"]) # set self.image to a diff image instead
+        # self.image.fill(colors["green"]) # set self.image to a diff image instead
         elif keystate[pygame.K_DOWN] or keystate[pygame.K_s]:
             self.y_curr_spd += self.y_spd
             # self.image.fill(colors["pink"])

@@ -41,5 +41,5 @@ with open("test_map.txt", 'w') as f:
 with open("map1.txt") as f:
     temp = f.readlines()
     world_map = [[_ for _ in temp[i].strip("\n")] for i in range(len(temp))]
-    for _ in world_map:
-        print(_)
+    # for _ in world_map:
+    #     print(_)

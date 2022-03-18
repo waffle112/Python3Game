@@ -2,7 +2,8 @@ import pygame, sys
 from game_classes import *
 import tkinter as tk
 import config
-
+import pickle
+import gc
 '''
 TODO
 Eric - Make a Title Screen with buttons and menus - Done 
@@ -59,39 +60,75 @@ def generate_level(map, pics):
                 pass
 
 
-
 # game function
 def game():
+
+    try:
+        autosave = open("save.dat", "rb")
+        game_state = pickle.load(autosave)
+        print(game_state)
+        #test player
+        main_player = Player(config.size)
+        main_player.rect = game_state["main_player.rect"]
+
+        #test enemy
+        enemy1 = enemy_1()
+        enemy1.rect = game_state["enemy1.rect"]
+
+        #test item
+        item1 = item()
+        item1.rect = game_state["item1.rect"]
+        autosave.close()
+
+    except IOError:
+        #test player
+        main_player = Player(config.size)
+        main_player.set_pos(config.width / 2, config.height / 2)
+
+        #test enemy
+        enemy1 = enemy_1()
+
+        #test item
+        item1 = item()
+    autosave = open("save.dat", "wb")
+
     clock = pygame.time.Clock()
+    config.all_sprites.add(main_player)
+    config.all_sprites.add(enemy1)
+    config.all_sprites.add(item1)
+    config.item_sprites.add(item1)
+    #load in relevant info
+    game_state = dict()
+
 
     #start main menu?
     mainMenu()
     config.screen.fill(config.colors["black"])
-
-    main_player = Player(config.size)
-    main_player.set_pos(config.width / 2, config.height / 2)
-
-    config.all_sprites.add(main_player)
-
-    #test enemy
-    enemy1 = enemy_1()
-    config.all_sprites.add(enemy1)
-
-    #test item
-    item1 = item()
-    config.all_sprites.add(item1)
-    config.item_sprites.add(item1)
 
     set_text(["test1", "Test2", "Test3"])
 
     pics = []
     generate_level(config.world_map, pics)
 
+
+
+
     while True:
         clock.tick(60)  # set fps to 60
 
         for event in pygame.event.get():
-            if event.type == pygame.QUIT: sys.exit()
+            if event.type == pygame.QUIT:
+                game_state["main_player.rect"]= main_player.rect
+                game_state["enemy1.rect"] = enemy1.rect
+                game_state["item1.rect"] = item1.rect
+                pickle.dump(game_state, autosave, protocol=2)
+                autosave.close()
+                sys.exit()
+            if event.type == pygame.USEREVENT+1: #custom event #1
+                #reset buff action
+                main_player.spreadshot = False
+                pass
+
 
         # update
         config.all_sprites.update()
